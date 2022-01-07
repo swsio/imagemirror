@@ -5,4 +5,4 @@ metadata:
   namespace: openshift-cron-jobs
 data:
   run: |-
-    /usr/bin/skopeo sync --all --src docker --src-creds $SRC-CREDS --dest-creds $DST-CREDS --dest docker $(cat /mirror/work/*.mirror)
+    for mirror in $(ls /mirror/work/ -1); do /usr/bin/skopeo sync --all --src docker --src-creds $SRCCREDS --dest-creds $DSTCREDS --dest docker $(cat /mirror/work/${mirror}); done

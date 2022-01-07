@@ -13,7 +13,7 @@ FROM registry.fedoraproject.org/fedora:latest
 # up space.  Also reinstall shadow-utils as without
 # doing so, the setuid/setgid bits on newuidmap
 # and newgidmap are lost in the Fedora images. 
-RUN useradd skopeo; yum -y update; yum -y reinstall shadow-utils; yum -y install skopeo fuse-overlayfs --exclude container-selinux; yum -y install parallel; yum -y clean all; rm -rf /var/cache/dnf/* /var/log/dnf* /var/log/yum*
+RUN useradd skopeo; yum -y update; yum -y reinstall shadow-utils; yum -y install skopeo fuse-overlayfs --exclude container-selinux; yum -y install parallel htop; yum -y clean all; rm -rf /var/cache/dnf/* /var/log/dnf* /var/log/yum*
 
 # Adjust storage.conf to enable Fuse storage.
 RUN sed -i -e 's|^#mount_program|mount_program|g' -e '/additionalimage.*/a "/var/lib/shared",' -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' /etc/containers/storage.conf
@@ -32,6 +32,7 @@ ENV REGISTRY_AUTH_FILE=/tmp/auth.json
 ENV SRCCREDS="USER:PASSWORD"
 ENV DSTCREDS="USER:PASSWORD"
 ENV THREADS=30
+ENV debug="false"
 
 COPY ./startup.sh /
 RUN chmod +x /startup.sh
