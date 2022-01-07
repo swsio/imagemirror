@@ -29,8 +29,8 @@ RUN echo skopeo:100000:65536 > /etc/subgid
 
 # Point to the Authorization file
 ENV REGISTRY_AUTH_FILE=/tmp/auth.json
-ENV SRC-CREDS="USER:PASSWORD"
-ENV DST-CREDS="USER:PASSWORD"
+ENV SRCCREDS="USER:PASSWORD"
+ENV DSTCREDS="USER:PASSWORD"
 ENV THREADS=30
 
 COPY ./startup.sh /
@@ -38,4 +38,3 @@ RUN chmod +x /startup.sh
 
 # Set the entrypoint
 ENTRYPOINT [ "/startup.sh" ]
-CMD [ "/usr/bin/skopeo" ]
