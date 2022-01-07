@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: image-mirror
+  namespace: openshift-cron-jobs
+data:
+  run: |-
+    /usr/bin/skopeo sync --all --src docker --src-creds $SRC-CREDS --dest-creds $DST-CREDS --dest docker $(cat /mirror/work/*.mirror)

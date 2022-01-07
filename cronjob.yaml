@@ -1,0 +1,53 @@
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+  name: image-mirroring
+  namespace: openshift-cron-jobs
+spec:
+  schedule: '* /15 * * *'
+  concurrencyPolicy: Allow
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          volumes:
+          - name: run
+            configMap:
+              name: image-mirror
+              items:
+                - key: run
+                  path: config
+              defaultMode: 420
+          - name: work
+            configMap:
+              name: image-mirror-list
+              defaultMode: 420
+          containers:
+            - name: image-mirror
+              image: 'quay.io/agileio/image-mirroring:latest'
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: run
+                  mountPath: /mirror
+                  subPath: config
+                - name: work
+                  mountPath: /mirror
+                  subPath: work
+              envFrom:
+                - configMapRef:
+                    name: buero-config
+          restartPolicy: Never
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
