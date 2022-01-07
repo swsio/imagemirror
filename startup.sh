@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-set -Eeo pipefail
+
+if [ $debug == "true" ]; then
+    echo "Debug enabled"
+else
+    echo "Debug disabled"
+    set -Eeo pipefail
+fi
 
 ### Do things PARALLEL
 cat /mirror/config/run | parallel -j $THREADS
