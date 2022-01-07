@@ -1,0 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: image-mirror-list
+  namespace: openshift-cron-jobs
+data:
+  # Example:
+  alpine.mirror: docker.io/alpine quay.io/mymirror
+  # FOR LIBRARY IMAGES:
+  IMAGE.mirror: docker.io/IMAGENAME quay.io/REPONAME
+  # FOR IMAGES FROM REPOSITORY:
+  IMAGENAME.mirror: docker.io/CORP/IMAGENAME quay.io/REPONAME
+  
